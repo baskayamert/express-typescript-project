@@ -43,12 +43,12 @@ export const AppRoutes = [
     {
         path: "/api/branches",
         method: "post",
-        action: [authenticateToken, branchSaveAction ]
+        action: [authenticateToken, restrictToRole(Role.OWNER), branchSaveAction ]
     },
     {
         path: "/api/branches/:id",
         method: "get",
-        action: [authenticateToken, branchGetByIdAction ]
+        action: [authenticateToken, restrictToRole(Role.OWNER), branchGetByIdAction ]
     },
     {
         path: "/api/branches/:id",
@@ -58,6 +58,6 @@ export const AppRoutes = [
     {
         path: "/api/branches/:id",
         method: "delete",
-        action: [authenticateToken, branchDeleteAction ]
+        action: [authenticateToken, restrictToRole(Role.OWNER), branchDeleteAction ]
     },
 ];
