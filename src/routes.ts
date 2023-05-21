@@ -1,5 +1,5 @@
 import { authenticateToken, restrictToRole } from "./auth/auth.service";
-import { login } from "./controllers/AuthActions";
+import { login, register } from "./controllers/AuthActions";
 import { branchDeleteAction, branchGetAllAction, branchGetByIdAction, branchSaveAction, branchUpdateAction } from "./controllers/BranchActions";
 import { userDeleteAction, userGetAllAction, userGetByIdAction, userSaveAction, userUpdateAction } from "./controllers/UserActions";
 import { Role } from "./entity/User";
@@ -9,6 +9,11 @@ export const AppRoutes = [
         path: "/api/auth/login",
         method: "post",
         action: [login ]
+    },
+    {
+        path: "/api/auth/register",
+        method: "post",
+        action: [register]
     },
     {
         path: "/api/users",
@@ -46,18 +51,19 @@ export const AppRoutes = [
         action: [authenticateToken, restrictToRole(Role.OWNER), branchSaveAction ]
     },
     {
-        path: "/api/branches/:id",
+        path: "/api/branches/:branch_id",
         method: "get",
         action: [authenticateToken, restrictToRole(Role.OWNER), branchGetByIdAction ]
     },
     {
-        path: "/api/branches/:id",
+        path: "/api/branches/:branch_id",
         method: "put",
         action: [authenticateToken, restrictToRole(Role.OWNER), branchUpdateAction ]
     },
     {
-        path: "/api/branches/:id",
+        path: "/api/branches/:branch_id",
         method: "delete",
-        action: [authenticateToken, restrictToRole(Role.OWNER), branchDeleteAction ]
+        action: [authenticateToken, branchDeleteAction ]
+        // action: [authenticateToken, restrictToRole(Role.OWNER), branchDeleteAction ]
     },
 ];

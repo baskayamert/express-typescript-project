@@ -5,7 +5,12 @@ import { Role, User } from '../entity/User';
 import config from '../../config';
 import { NextFunction, Request, Response } from 'express';
 
-export async function authenticateUser(username: string, password: string): Promise<string> {
+export class AuthSuccess{
+  token: string;
+  role: Role;
+}
+
+export async function authenticateUser(username: string, password: string): Promise<AuthSuccess> {
   const userRepository = AppDataSource.getRepository(User);
   const user = await userRepository.findOne({where:{username:username}});
 
@@ -22,7 +27,7 @@ export async function authenticateUser(username: string, password: string): Prom
 
   const token = sign({ userId: user.id, role: user.role }, config.jwtSecret, { expiresIn: config.jwtExpiration });
 
-  return token;
+  return {token: token, ...user};
 }
 
 export function authenticateToken(req: AuthenticatedRequest, res: Response, next: NextFunction) {

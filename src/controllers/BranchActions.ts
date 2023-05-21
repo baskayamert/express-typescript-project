@@ -8,8 +8,7 @@ export async function branchGetAllAction(request: Request, response: Response) {
 
     const branches = await branchRepository.find();
 
-    response.status(200);
-    response.send(branches);
+    response.status(200).json({branches: branches});
 }
 
 export async function branchGetByIdAction(request: Request, response: Response) {
@@ -24,7 +23,7 @@ export async function branchGetByIdAction(request: Request, response: Response) 
         return;
     }
     response.status(200);
-    response.send(branch);
+    response.json({branch: branch});
 }
 
 export async function branchSaveAction(request: Request, response: Response) {
@@ -54,8 +53,8 @@ export async function branchDeleteAction(request: Request, response: Response) {
 
     const branchRepository = AppDataSource.getRepository(Branch);
 
-    await branchRepository.delete(request.body.branch_id);
-
+    await branchRepository.delete(request.params.branch_id);
+    
 
     response.status(204);
     response.end();
